@@ -1,0 +1,3 @@
+-- Historical migration preserved for version alignment with production.
+-- Its final schema effect is already folded into 20260831201348_initialize_teatechnology_cms.sql.
+-- Intentionally no-op.
