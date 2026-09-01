@@ -1,0 +1,36 @@
+name: Embed logo CSS
+
+on:
+  push:
+    paths:
+      - '.github/workflows/embed-logo-css.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Embed logo CSS into index
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          cssp = Path('assets/logo-inline.css')
+          s = p.read_text()
+          css = cssp.read_text().strip()
+          s = s.replace('\n<link rel="stylesheet" href="assets/logo-inline.css">', '')
+          marker = '<style>\n:root{'
+          if '/* embedded-logo-css */' not in s:
+              s = s.replace('<style>\n:root{', '<style>\n/* embedded-logo-css */\n' + css + '\n:root{', 1)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Embed logo CSS directly in HTML"
+          git push
