@@ -1,0 +1,52 @@
+name: Use inline img logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/use-inline-img-logo.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Convert logo spans to inline img
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text()
+
+          m = re.search(r'data:image/jpeg;base64,([^\"\)]+)', s)
+          if not m:
+              raise SystemExit('inline logo data not found')
+          data_uri = 'data:image/jpeg;base64,' + m.group(1)
+
+          s = re.sub(
+              r'<span id="logo" class="brand-logo" role="img" aria-label="Teatechnology logo"></span>',
+              f'<img id="logo" src="{data_uri}" alt="Teatechnology logo" width="270" height="135" decoding="sync" fetchpriority="high">',
+              s,
+              count=1,
+          )
+          s = re.sub(
+              r'<span id="heroLogo" class="hero-logo" role="img" aria-label="Teatechnology"></span>',
+              f'<img id="heroLogo" src="{data_uri}" alt="Teatechnology" width="700" height="228" decoding="sync" fetchpriority="high">',
+              s,
+              count=1,
+          )
+
+          # Remove the special background-image logo rules; normal img rules already exist.
+          s = re.sub(r'/\* embedded-logo-css \*/.*?\n:root\{', ':root{', s, count=1, flags=re.S)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Render logo as inline image on first paint"
+          git push
