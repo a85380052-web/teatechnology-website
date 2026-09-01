@@ -1,0 +1,34 @@
+name: Fix logo span size
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-logo-span-size.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add explicit logo dimensions
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          marker = '/* embedded-logo-css */\n'
+          css = '.brand-logo{display:block;width:270px;height:135px;background-size:contain;background-repeat:no-repeat;background-position:center}.hero-logo{display:block;width:88%;height:300px;background-size:contain;background-repeat:no-repeat;background-position:center}@media(max-width:850px){.brand-logo{width:185px;height:96px}}@media(max-width:360px){.brand-logo{width:165px;height:90px}}\n'
+          if 'background-position:center}.hero-logo' not in s:
+              s = s.replace(marker, marker + css, 1)
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Give inline logo spans explicit dimensions"
+          git push
