@@ -1,0 +1,56 @@
+name: Install local logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/install-local-logo.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original logo and patch page
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl -fL --retry 3 --retry-delay 2 \
+            'https://static.wixstatic.com/media/16d0ee_0281afa706e0449ab165d50a241f4bc2~mv2.jpg' \
+            -o assets/teatechnology-logo.jpg
+
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          logo = Path('assets/teatechnology-logo.jpg')
+          data = logo.read_bytes()
+          if len(data) < 10000 or not data.startswith(b'\xff\xd8') or not data.endswith(b'\xff\xd9'):
+              raise SystemExit('Downloaded logo is not a valid JPEG')
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          # Visible logos are static and must never be overwritten by Supabase.
+          s, n = re.subn(
+              r'(<img\s+class="static-logo"\s+src=")[^"]+("[^>]*>)',
+              r'\1assets/teatechnology-logo.jpg\2',
+              s,
+          )
+          if n < 2:
+              raise SystemExit(f'Expected at least 2 visible static logos, patched {n}')
+
+          # Remove old inline image payloads if any remain on visible logos.
+          p.write_text(s)
+          print(f'Patched {n} visible logos; local JPEG size={len(data)} bytes')
+          PY
+
+      - name: Commit stable local logo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/teatechnology-logo.jpg
+          git diff --cached --quiet || git commit -m "Use stable local logo asset"
+          git push
