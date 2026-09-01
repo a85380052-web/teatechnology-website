@@ -1,0 +1,41 @@
+name: Inline logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/inline-logo.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch logo rendering
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('index.html')
+          s=p.read_text()
+          old='https://static.wixstatic.com/media/16d0ee_6327098e0dca4da18454c5d8b1e58bf3~mv2.jpg'
+          s=re.sub(r'\n<link rel="preconnect" href="https://static\.wixstatic\.com" crossorigin>','',s)
+          s=re.sub(r'\n<link rel="preload" as="image" href="[^"]+" fetchpriority="high">','',s)
+          marker='<meta name="description" content="Teatechnology a Roma: assistenza, riparazione e manutenzione per smartphone e tablet.">'
+          css='\n<link rel="stylesheet" href="assets/logo-inline.css">'
+          if 'assets/logo-inline.css' not in s:
+              s=s.replace(marker,marker+css,1)
+          s=re.sub(r'<img id="logo"[^>]*>', '<span id="logo" class="brand-logo" role="img" aria-label="Teatechnology logo"></span>', s, count=1)
+          s=re.sub(r'<img id="heroLogo"[^>]*>', '<span id="heroLogo" class="hero-logo" role="img" aria-label="Teatechnology"></span>', s, count=1)
+          s=s.replace("logo.src=s.logo_url||'';heroLogo.src=s.logo_url||'';", "")
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Render logo instantly without external image request"
+          git push
