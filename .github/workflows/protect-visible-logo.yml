@@ -1,0 +1,52 @@
+name: Protect visible logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/protect-visible-logo.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Keep visible logo separate from dynamic logo ids
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          # The dynamic site script still targets #logo / #heroLogo and may replace
+          # their src with a remote URL. Keep those ids on hidden placeholders,
+          # while the visible inline images no longer expose those ids.
+          if 'id="logo"' in s and 'class="static-logo"' not in s:
+              s = re.sub(
+                  r'<img id="logo"([^>]*)>',
+                  r'<img class="static-logo"\1><img id="logo" hidden alt="">',
+                  s,
+                  count=1,
+              )
+
+          if 'id="heroLogo"' in s and 'class="static-hero-logo"' not in s:
+              s = re.sub(
+                  r'<img id="heroLogo"([^>]*)>',
+                  r'<img class="static-hero-logo"\1><img id="heroLogo" hidden alt="">',
+                  s,
+                  count=1,
+              )
+
+          p.write_text(s)
+          PY
+      - name: Commit patch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Protect visible inline logo from dynamic overwrite"
+          git push
