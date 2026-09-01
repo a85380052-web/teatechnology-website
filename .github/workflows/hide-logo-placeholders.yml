@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Hide placeholders and reduce header height
+      - name: Hide placeholders and pull header up
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -26,9 +26,10 @@ jobs:
           if '[hidden]{display:none!important}' not in s:
               s = s.replace('*{box-sizing:border-box}', '*{box-sizing:border-box}[hidden]{display:none!important}')
 
-          # Keep the current logo dimensions unchanged; only reduce header height.
-          s = s.replace('.nav{height:122px;', '.nav{height:112px;')
-          s = s.replace('@media(max-width:850px){nav{display:none}.nav{height:102px;', '@media(max-width:850px){nav{display:none}.nav{height:94px;')
+          # Keep logo dimensions unchanged; reduce the bar height and let the logo extend below it.
+          s = s.replace('.nav{height:112px;', '.nav{height:84px;')
+          s = s.replace('.brand{display:flex;align-items:center}', '.brand{display:flex;align-items:center;align-self:flex-start;position:relative;z-index:6}')
+          s = s.replace('@media(max-width:850px){nav{display:none}.nav{height:94px;', '@media(max-width:850px){nav{display:none}.nav{height:76px;')
 
           p.write_text(s)
           PY
@@ -37,5 +38,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Reduce header height without resizing logo"
+          git diff --cached --quiet || git commit -m "Pull header up without resizing logo"
           git push
