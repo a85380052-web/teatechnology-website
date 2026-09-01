@@ -1,0 +1,36 @@
+name: Hide logo placeholders
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hide-logo-placeholders.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Force hidden logo placeholders offscreen
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text()
+          s = s.replace('<img id="logo" hidden alt="">', '<img id="logo" hidden style="display:none!important" alt="">')
+          s = s.replace('<img id="heroLogo" hidden alt="">', '<img id="heroLogo" hidden style="display:none!important" alt="">')
+          if '[hidden]{display:none!important}' not in s:
+              s = s.replace('*{box-sizing:border-box}', '*{box-sizing:border-box}[hidden]{display:none!important}')
+          p.write_text(s)
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Hide dynamic logo placeholders"
+          git push
