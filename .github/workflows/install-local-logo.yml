@@ -33,18 +33,17 @@ jobs:
           p = Path('index.html')
           s = p.read_text()
 
-          # Visible logos are static and must never be overwritten by Supabase.
+          # Replace the two visible inline logo payloads with the stable local JPEG.
           s, n = re.subn(
-              r'(<img\s+class="static-logo"\s+src=")[^"]+("[^>]*>)',
-              r'\1assets/teatechnology-logo.jpg\2',
+              r'src="data:image/jpeg;base64,[^"]+"',
+              'src="assets/teatechnology-logo.jpg"',
               s,
           )
           if n < 2:
-              raise SystemExit(f'Expected at least 2 visible static logos, patched {n}')
+              raise SystemExit(f'Expected at least 2 inline logo images, patched {n}')
 
-          # Remove old inline image payloads if any remain on visible logos.
           p.write_text(s)
-          print(f'Patched {n} visible logos; local JPEG size={len(data)} bytes')
+          print(f'Patched {n} inline logo images; local JPEG size={len(data)} bytes')
           PY
 
       - name: Commit stable local logo
