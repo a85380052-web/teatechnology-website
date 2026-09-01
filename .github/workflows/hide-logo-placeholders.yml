@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Hide placeholders and pull header up
+      - name: Hide placeholders and align logo inside compact header
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -21,15 +21,18 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text()
+
           s = s.replace('<img id="logo" hidden alt="">', '<img id="logo" hidden style="display:none!important" alt="">')
           s = s.replace('<img id="heroLogo" hidden alt="">', '<img id="heroLogo" hidden style="display:none!important" alt="">')
           if '[hidden]{display:none!important}' not in s:
               s = s.replace('*{box-sizing:border-box}', '*{box-sizing:border-box}[hidden]{display:none!important}')
 
-          # Keep logo dimensions unchanged; reduce the bar height and let the logo extend below it.
-          s = s.replace('.nav{height:112px;', '.nav{height:84px;')
-          s = s.replace('.brand{display:flex;align-items:center}', '.brand{display:flex;align-items:center;align-self:flex-start;position:relative;z-index:6}')
-          s = s.replace('@media(max-width:850px){nav{display:none}.nav{height:94px;', '@media(max-width:850px){nav{display:none}.nav{height:76px;')
+          # Keep the compact header and the existing logo size, but prevent the JPEG's white canvas
+          # from extending into the blue hero area. Center the useful logo content inside the bar.
+          s = s.replace('header{position:sticky;top:0;background:#fffffff2;border-bottom:1px solid var(--l);z-index:5}',
+                        'header{position:sticky;top:0;background:#fffffff2;border-bottom:1px solid var(--l);z-index:5;overflow:hidden}')
+          s = s.replace('.brand img{width:235px;height:108px;object-fit:contain;display:block}',
+                        '.brand img{width:235px;height:108px;object-fit:contain;display:block;transform:translateY(-12px)}')
 
           p.write_text(s)
           PY
@@ -38,5 +41,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Pull header up without resizing logo"
+          git diff --cached --quiet || git commit -m "Align logo within compact header"
           git push
