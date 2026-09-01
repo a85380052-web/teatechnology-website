@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Hide placeholders and tighten header
+      - name: Hide placeholders and reduce header height
         run: |
           set -euo pipefail
           python - <<'PY'
@@ -26,11 +26,9 @@ jobs:
           if '[hidden]{display:none!important}' not in s:
               s = s.replace('*{box-sizing:border-box}', '*{box-sizing:border-box}[hidden]{display:none!important}')
 
-          s = s.replace('.nav{height:150px;', '.nav{height:122px;')
-          s = s.replace('.brand img{width:270px;height:135px;', '.brand img{width:235px;height:108px;')
-          s = s.replace('@media(max-width:850px){nav{display:none}.nav{height:114px;', '@media(max-width:850px){nav{display:none}.nav{height:102px;')
-          s = s.replace('.brand img{width:185px;height:96px}', '.brand img{width:172px;height:84px}')
-          s = s.replace('@media(max-width:360px){.brand img{width:165px;height:90px}', '@media(max-width:360px){.brand img{width:155px;height:80px}')
+          # Keep the current logo dimensions unchanged; only reduce header height.
+          s = s.replace('.nav{height:122px;', '.nav{height:112px;')
+          s = s.replace('@media(max-width:850px){nav{display:none}.nav{height:102px;', '@media(max-width:850px){nav{display:none}.nav{height:94px;')
 
           p.write_text(s)
           PY
@@ -39,5 +37,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet || git commit -m "Tighten header spacing"
+          git diff --cached --quiet || git commit -m "Reduce header height without resizing logo"
           git push
