@@ -1,24 +1,77 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scheda riparazione</title><style>@page{size:A4;margin:10mm}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;color:#1b2e45;background:#eef5f9}.bar{max-width:900px;margin:14px auto;display:flex;justify-content:flex-end;gap:10px}.btn{border:0;border-radius:9px;padding:10px 14px;background:#123b7a;color:#fff;font-weight:700;cursor:pointer;text-decoration:none}.sheet{width:210mm;min-height:287mm;margin:0 auto 20px;background:#fff;padding:10mm 11mm;box-shadow:0 4px 24px #0002}.head{display:grid;grid-template-columns:1fr 1.25fr;gap:12mm;align-items:center;border-bottom:2px solid #123b7a;padding-bottom:5mm}.logo{width:75mm;max-height:32mm;object-fit:contain;object-position:left center}.shop{text-align:right}.shop h1{margin:0;color:#123b7a;font-size:25px;letter-spacing:.4px}.shop .sub{font-size:16px;font-weight:700;margin:2mm 0}.shop div{font-size:12px;line-height:1.5}.refrow{display:flex;justify-content:space-between;align-items:center;padding:5mm 0 3mm;font-size:16px;font-weight:700}.block{border-top:1px solid #7890a6;padding-top:3mm;margin-top:3mm}.title{font-weight:800;color:#123b7a;font-size:14px;margin-bottom:2mm}.checks{display:flex;flex-wrap:wrap;gap:3mm 6mm;font-size:13px}.check::before{content:'☐';margin-right:1.5mm}.check.on::before{content:'☒'}.grid{display:grid;grid-template-columns:1fr 1fr;gap:3mm 10mm}.line{min-height:9mm;border-bottom:1px dotted #7c8b99;padding:2mm 0;font-size:13px}.line strong{color:#123b7a}.notes{min-height:36mm;border-bottom:1px solid #7890a6;white-space:pre-wrap}.money{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;margin-top:4mm}.money div{border:1px solid #ccd9e3;border-radius:5px;padding:3mm;font-size:12px}.money strong{display:block;color:#123b7a;font-size:15px;margin-top:1mm}.terms{font-size:9.5px;line-height:1.35;white-space:pre-wrap;margin-top:5mm}.signature{margin-top:6mm;display:grid;grid-template-columns:1fr 1fr;gap:15mm}.sigline{border-bottom:1px dotted #555;height:12mm;font-size:10px;color:#555;padding-top:8mm}.foot{font-size:9px;color:#607487;margin-top:5mm;text-align:center}@media print{body{background:#fff}.bar{display:none}.sheet{box-shadow:none;margin:0;width:auto;min-height:auto;padding:0}}</style></head><body><div class="bar"><a class="btn" href="repairs.html">← Torna</a><button class="btn" onclick="window.print()">Stampa</button></div><main id="sheet" class="sheet"><div style="text-align:center;padding:40px">Caricamento…</div></main><script>
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scheda riparazione</title>
+<style>
+@page{size:A4;margin:7mm}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:#1b2e45;background:#eef5f9}
+.bar{max-width:900px;margin:14px auto;display:flex;justify-content:flex-end;gap:10px}
+.btn{border:0;border-radius:9px;padding:10px 14px;background:#123b7a;color:#fff;font-weight:700;cursor:pointer;text-decoration:none}
+.sheet{width:210mm;min-height:297mm;margin:0 auto 20px;background:#fff;padding:7mm;box-shadow:0 4px 24px #0002}
+.copy{height:134mm;overflow:hidden;padding:3.5mm 5mm}
+.copy-label{font-size:8px;font-weight:800;letter-spacing:.7px;color:#607487;text-align:right;margin-bottom:1mm}
+.head{display:grid;grid-template-columns:.9fr 1.4fr;gap:7mm;align-items:center;border-bottom:1.6px solid #123b7a;padding-bottom:2.5mm}
+.logo{width:50mm;max-height:18mm;object-fit:contain;object-position:left center}
+.shop{text-align:right}
+.shop h1{margin:0;color:#123b7a;font-size:18px;letter-spacing:.2px}
+.shop .sub{font-size:10.5px;font-weight:700;margin:.7mm 0}
+.shop div{font-size:8.2px;line-height:1.28}
+.refrow{display:flex;justify-content:space-between;gap:8mm;padding:2.2mm 0 1.5mm;font-size:10px;font-weight:700}
+.block{border-top:1px solid #9aabb9;padding-top:1.4mm;margin-top:1.4mm}
+.title{font-weight:800;color:#123b7a;font-size:8.6px;margin-bottom:1mm}
+.checks{display:flex;flex-wrap:wrap;gap:1.2mm 3.6mm;font-size:8.2px;line-height:1.15}
+.check::before{content:'☐';margin-right:.8mm}.check.on::before{content:'☒'}
+.grid{display:grid;grid-template-columns:1fr 1fr;column-gap:8mm}
+.line{min-height:5.2mm;border-bottom:1px dotted #8a99a6;padding:1.1mm 0;font-size:8.6px}
+.line strong{color:#123b7a}
+.notes{min-height:14mm;max-height:18mm;overflow:hidden;white-space:pre-wrap;font-size:8.4px;line-height:1.22;padding-top:.5mm}
+.money{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;margin-top:1.8mm}
+.money div{border:1px solid #ccd9e3;border-radius:4px;padding:1.6mm;font-size:7.7px}
+.money strong{display:block;color:#123b7a;font-size:10px;margin-top:.4mm}
+.terms{font-size:6.6px;line-height:1.16;white-space:pre-wrap;margin-top:1.8mm;max-height:24mm;overflow:hidden}
+.signature{margin-top:2mm;display:grid;grid-template-columns:1fr 1fr;gap:10mm}
+.sigline{border-bottom:1px dotted #555;height:6.5mm;font-size:6.8px;color:#555;padding-top:4.2mm}
+.cut{height:7mm;border-top:1px dashed #687b8b;border-bottom:1px dashed #687b8b;display:flex;align-items:center;justify-content:center;color:#687b8b;font-size:9px;letter-spacing:.5px}
+@media print{
+  body{background:#fff}
+  .bar{display:none}
+  .sheet{box-shadow:none;margin:0;width:auto;min-height:auto;padding:0}
+  .copy{height:134mm}
+}
+</style>
+</head>
+<body>
+<div class="bar"><a class="btn" href="repairs.html">← Torna</a><button class="btn" onclick="window.print()">Stampa</button></div>
+<main id="sheet" class="sheet"><div style="text-align:center;padding:40px">Caricamento…</div></main>
+<script>
 const SB='https://pgnbacjlgnzmcsgfdxrn.supabase.co',KEY='sb_publishable_zMSq9XcCU_mChMK6hDuQLQ_vIP_jbaT',token=localStorage.getItem('tea_token')||'';
 const sheetEl=document.getElementById('sheet'),q=new URLSearchParams(location.search),id=q.get('id');
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const TYPES=['Verifica','SIM Slot','Connettore','Altoparlante','LCD','Vetro','Microfono','Liquidi','Batteria','Tasti','Software','Altro'];
-const STATUS={received:'Ricevuto',diagnosing:'In diagnosi',awaiting_customer:'In attesa cliente',awaiting_parts:'In attesa ricambi',repairing:'In riparazione',completed:'Completato',picked_up:'Ritirato',cancelled:'Annullato'};
 const fmt=n=>n==null||n===''?'—':'€ '+Number(n).toFixed(2);
+function copyHtml(o,s,label){
+  const logo='../assets/teatechnology-logo.jpg';
+  const dt=new Date(o.received_at||o.created_at||Date.now()).toLocaleDateString('it-IT');
+  const repair=o.repair_types||[];
+  const email=s.repair_email?'<div>Email: '+E(s.repair_email)+'</div>':'';
+  return '<section class="copy">'+
+    '<div class="copy-label">'+E(label)+'</div>'+
+    '<div class="head"><div><img class="logo" src="'+logo+'" alt="Teatechnology"></div><div class="shop"><h1>'+E(s.brand_name||'Teatechnology')+'</h1><div class="sub">'+E(s.repair_header_it||'CENTRO ASSISTENZA Smartphone, Tablet e Computer')+'</div><div>'+E(s.address||'')+'</div><div>Tel. '+E(s.phone||'')+(s.repair_phone_secondary?' · '+E(s.repair_phone_secondary):'')+'</div><div>'+E(s.repair_website||'teatechnology.it')+'</div>'+email+'</div></div>'+
+    '<div class="refrow"><span>N. Rif.: '+E(o.order_no||'')+'</span><span>Data: '+E(dt)+'</span></div>'+
+    '<div class="block"><div class="title">TIPO DI DISPOSITIVO</div><div class="checks">'+['telefonino','tablet','computer','altro'].map(x=>'<span class="check '+(o.device_type===x?'on':'')+'">'+E(x.charAt(0).toUpperCase()+x.slice(1))+'</span>').join('')+'</div></div>'+
+    '<div class="block"><div class="title">TIPO DI RIPARAZIONE</div><div class="checks">'+TYPES.map(x=>'<span class="check '+(repair.includes(x)?'on':'')+'">'+E(x)+'</span>').join('')+'</div></div>'+
+    '<div class="block grid"><div class="line"><strong>Nome Cliente:</strong> '+E(o.customer_name||'')+'</div><div class="line"><strong>Tel:</strong> '+E(o.customer_phone||'')+'</div><div class="line"><strong>Marca / Modello:</strong> '+E([o.brand,o.model].filter(Boolean).join(' '))+'</div><div class="line"><strong>IMEI / Serial:</strong> '+E(o.imei_serial||'')+'</div><div class="line"><strong>Accessori:</strong> '+E(o.accessories||'')+'</div><div class="line"><strong>Pagato:</strong> '+(o.paid?'Sì':'No')+' · <strong>Ritirato:</strong> '+(o.picked_up?'Sì':'No')+'</div></div>'+
+    '<div class="block"><div class="title">PROBLEMA / NOTE</div><div class="notes">'+E([o.problem_description,o.appearance_notes,o.notes].filter(Boolean).join('\n'))+'</div></div>'+
+    '<div class="money"><div>Preventivo<strong>'+fmt(o.estimated_price)+'</strong></div><div>Acconto<strong>'+fmt(o.deposit_amount)+'</strong></div><div>Totale finale<strong>'+fmt(o.final_price)+'</strong></div></div>'+
+    '<div class="terms"><strong>Condizioni di assistenza</strong>\n'+E(s.repair_terms_it||'')+'</div>'+
+    '<div class="signature"><div class="sigline">Firma cliente</div><div class="sigline">Pagato e ritirato il</div></div>'+
+  '</section>';
+}
 function renderSheet(o,s){
-  let logo='../assets/teatechnology-logo.jpg';
-  let dt=new Date(o.received_at||o.created_at||Date.now()).toLocaleDateString('it-IT');
-  let repair=o.repair_types||[];
-  sheetEl.innerHTML='<div class="head"><div><img class="logo" src="'+E(logo)+'" alt="Teatechnology"></div><div class="shop"><h1>'+E(s.brand_name||'Teatechnology')+'</h1><div class="sub">'+E(s.repair_header_it||'CENTRO ASSISTENZA Smartphone, Tablet e Computer')+'</div><div>'+E(s.address||'')+'</div><div>Tel. '+E(s.phone||'')+(s.repair_phone_secondary?' · '+E(s.repair_phone_secondary):'')+'</div><div>'+E(s.repair_website||'teatechnology.it')+'</div></div></div>'+
-  '<div class="refrow"><span>N. Rif.: '+E(o.order_no||'')+'</span><span>Data: '+E(dt)+'</span></div>'+
-  '<div class="block"><div class="title">TIPO DI DISPOSITIVO</div><div class="checks">'+['telefonino','tablet','computer','altro'].map(x=>'<span class="check '+(o.device_type===x?'on':'')+'">'+E(x.charAt(0).toUpperCase()+x.slice(1))+'</span>').join('')+'</div></div>'+
-  '<div class="block"><div class="title">TIPO DI RIPARAZIONE</div><div class="checks">'+TYPES.map(x=>'<span class="check '+(repair.includes(x)?'on':'')+'">'+E(x)+'</span>').join('')+'</div></div>'+
-  '<div class="block grid"><div class="line"><strong>Nome Cliente:</strong> '+E(o.customer_name||'')+'</div><div class="line"><strong>Tel:</strong> '+E(o.customer_phone||'')+'</div><div class="line"><strong>Marca / Modello:</strong> '+E([o.brand,o.model].filter(Boolean).join(' '))+'</div><div class="line"><strong>IMEI / Serial:</strong> '+E(o.imei_serial||'')+'</div><div class="line"><strong>Accessori:</strong> '+E(o.accessories||'')+'</div><div class="line"><strong>Stato:</strong> '+E(STATUS[o.status]||o.status||'')+'</div></div>'+
-  '<div class="block"><div class="title">Problema / Note</div><div class="notes">'+E([o.problem_description,o.appearance_notes,o.notes].filter(Boolean).join('\n'))+'</div></div>'+
-  '<div class="money"><div>Preventivo<strong>'+fmt(o.estimated_price)+'</strong></div><div>Acconto<strong>'+fmt(o.deposit_amount)+'</strong></div><div>Totale finale<strong>'+fmt(o.final_price)+'</strong></div></div>'+
-  '<div class="terms"><strong>Condizioni di assistenza</strong>\n'+E(s.repair_terms_it||'')+'</div>'+
-  '<div class="signature"><div class="sigline">Firma cliente</div><div class="sigline">Pagato e ritirato il</div></div>'+
-  '<div class="foot">'+E(s.brand_name||'Teatechnology')+' · '+E(s.address||'')+'</div>';
+  sheetEl.innerHTML=copyHtml(o,s,'COPIA CLIENTE')+'<div class="cut">✂ &nbsp; TAGLIARE QUI &nbsp; ✂</div>'+copyHtml(o,s,'COPIA NEGOZIO');
   document.title=(o.order_no||'Riparazione')+' - Teatechnology';
 }
 async function g(p){
@@ -42,10 +95,12 @@ async function load(){
       if(!o)throw Error('Ordine non trovato');
       renderSheet(o,s);
     }
-    if(q.get('autoprint')==='1') setTimeout(()=>window.print(),700);
+    if(q.get('autoprint')==='1')setTimeout(()=>window.print(),700);
   }catch(e){
     sheetEl.innerHTML='<div style="padding:40px;color:#a52b20"><strong>Errore:</strong> '+E(e.message||String(e))+'<br><br><a href="repairs.html">Torna alle riparazioni</a></div>';
   }
 }
 load();
-</script></script></body></html>
+</script>
+</body>
+</html>
