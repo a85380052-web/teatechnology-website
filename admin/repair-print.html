@@ -28,7 +28,7 @@ body{margin:0;font-family:Arial,sans-serif;color:#1b2e45;background:#eef5f9}
 .line{min-height:5.2mm;border-bottom:1px dotted #8a99a6;padding:1.1mm 0;font-size:8.6px}
 .line strong{color:#123b7a}
 .notes{min-height:14mm;max-height:18mm;overflow:hidden;white-space:pre-wrap;font-size:8.4px;line-height:1.22;padding-top:.5mm}
-.money{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;margin-top:1.8mm}
+.money{display:grid;grid-template-columns:repeat(2,1fr);gap:2.5mm;margin-top:1.8mm}
 .money div{border:1px solid #ccd9e3;border-radius:4px;padding:1.6mm;font-size:7.7px}
 .money strong{display:block;color:#123b7a;font-size:10px;margin-top:.4mm}
 .terms{font-size:6.6px;line-height:1.16;white-space:pre-wrap;margin-top:1.8mm;max-height:24mm;overflow:hidden}
@@ -65,7 +65,7 @@ function copyHtml(o,s,label){
     '<div class="block"><div class="title">TIPO DI RIPARAZIONE</div><div class="checks">'+TYPES.map(x=>'<span class="check '+(repair.includes(x)?'on':'')+'">'+E(x)+'</span>').join('')+'</div></div>'+
     '<div class="block grid"><div class="line"><strong>Nome Cliente:</strong> '+E(o.customer_name||'')+'</div><div class="line"><strong>Tel:</strong> '+E(o.customer_phone||'')+'</div><div class="line"><strong>Marca / Modello:</strong> '+E([o.brand,o.model].filter(Boolean).join(' '))+'</div><div class="line"><strong>IMEI / Serial:</strong> '+E(o.imei_serial||'')+'</div><div class="line"><strong>Accessori:</strong> '+E(o.accessories||'')+'</div><div class="line"><strong>Pagato:</strong> '+(o.paid?'Sì':'No')+' · <strong>Ritirato:</strong> '+(o.picked_up?'Sì':'No')+'</div></div>'+
     '<div class="block"><div class="title">PROBLEMA / NOTE</div><div class="notes">'+E([o.problem_description,o.appearance_notes,o.notes].filter(Boolean).join('\n'))+'</div></div>'+
-    '<div class="money"><div>Preventivo<strong>'+fmt(o.estimated_price)+'</strong></div><div>Acconto<strong>'+fmt(o.deposit_amount)+'</strong></div><div>Totale finale<strong>'+fmt(o.final_price)+'</strong></div></div>'+
+    '<div class="money"><div>Acconto<strong>'+fmt(o.deposit_amount)+'</strong></div><div>Totale<strong>'+fmt(o.final_price)+'</strong></div></div>'+
     '<div class="terms"><strong>Condizioni di assistenza</strong>\n'+E(s.repair_terms_it||'')+'</div>'+
     '<div class="signature"><div class="sigline">Firma cliente</div><div class="sigline">Pagato e ritirato il</div></div>'+
   '</section>';
